@@ -67,7 +67,7 @@ circbuf_err_t circbuf_is_full(circbuf_t *circular_buffer);
 * Date                 : 09/07/2017
 * Description          : Check if circular buffer is empty
 ***********************************************************/
-circbuf_err_t circbuf_buffer_empty(circbuf_t *circular_buffer);
+circbuf_err_t circbuf_is_empty(circbuf_t *circular_buffer);
 
 /***********************************************************
 * circbuf_add       : circbuf_err_t circbuf_add(uint32_t data, circbuf_t *circular_buffer);

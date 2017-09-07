@@ -39,7 +39,6 @@ all: build
 $(BIN_DIR)/$(OUTPUT_NAME): $(addprefix $(BUILD_DIR)/, $(OBJS))
 	@$(MKDIR_P) $(BIN_DIR)
 	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $^
-	$(SIZE) $@
 
 $(BUILD_DIR)/%.o: %.c
 	@$(MKDIR_P) $(BUILD_DIR)

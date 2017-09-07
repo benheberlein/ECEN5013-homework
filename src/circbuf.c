@@ -158,14 +158,13 @@ circbuf_err_t circbuf_allocate(uint16_t capacity, circbuf_t **init)  {
   // check maximum
   if (capacity > MAX_CAP) return ERR_CONFIG;
 
-    *init = NULL;
 	*init = (circbuf_t *) malloc(sizeof(circbuf_t));
 	if (*init == NULL) {
 		return ERR_MEM;
 	}
 
 	(*init)->buf = NULL;
-	(*init)->buf = (uint32_t *) malloc(capacity);
+	(*init)->buf = (uint32_t *) malloc(capacity * sizeof(uint32_t));
 	if ((*init)->buf == NULL) {
 		free(*init);
 		return ERR_MEM;
@@ -212,6 +211,28 @@ circbuf_err_t circbuf_destroy(circbuf_t *circular_buf) {
 * Description        : Prints the contents of the circular buffer
 ***********************************************************/
 circbuf_err_t circbuf_dump(circbuf_t *circular_buf) {
+    if (circular_buf == NULL) {
+        return ERR_NULLPTR;
+    }
+
+    if (circular_buf->buf == NULL) {
+        return ERR_NULLPTR;
+    }
+
+    uint32_t *temp = circular_buf->tail;
+    uint16_t ctr = 0;
+
+    printf("Circular buffer from tail to head:\n");
+
+    while (ctr < circular_buf->size) {
+        printf("%d\n", *temp);        
+        temp++;
+        ctr++;
+        if (temp >= circular_buf->buf + circular_buf->capacity) {
+            temp = circular_buf->buf;
+        }
+    }
+
     return ERR_SUCCESS;
 }
 
