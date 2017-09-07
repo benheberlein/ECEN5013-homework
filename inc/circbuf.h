@@ -20,12 +20,13 @@
 * This is the circular buffer state enum used in the
 * circbuf_t type.
 **********************************************************/
-typedef enum circbuf_state {EMPTY, FULL, PARTIAL, INVALID} circbuf_state_t;
+typedef enum circbuf_state {PARTIAL=0, EMPTY, FULL, INVALID} circbuf_state_t;
 
 /*********************************************************
 * This is the circular buffer error enumeration
 *********************************************************/
-typedef enum circbuf_err {EMPTY, FULL, PARTIAL, CONFIG, SUCCESS, MEM, UNKNOWN} circbuf_err_t;
+typedef enum circbuf_err {ERR_PARTIAL=0, ERR_EMPTY=1, ERR_FULL=2, ERR_SUCCESS=3, 
+                          ERR_CONFIG=-1, ERR_MEM=-2, ERR_NULLPTR=-3, ERR_UNKNOWN=-4} circbuf_err_t;
 
 /**********************************************************
 * circbuf_t
@@ -49,8 +50,8 @@ typedef struct circbuf {
 } circbuf_t;
 
 /***********************************************************
-* circbuf_is_full     : circbuf_err_t circbuf_buffer_full(circbuf_t *circular_buffer);
-*   returns           : FULL for full, PARTIAL for not full, or other error
+* circbuf_is_full     : circbuf_err_t circbuf_is_full(circbuf_t *circular_buffer);
+*   returns           : ERR_FULL for full (true), ERR_PARTIAL for not full (false), or other error
     circular_buffer   : The circular buffer to be checked
 * Author              : Ben Heberlein
 * Date                : 09/07/2017
@@ -59,8 +60,8 @@ typedef struct circbuf {
 circbuf_err_t circbuf_is_full(circbuf_t *circular_buffer);
 
 /***********************************************************
-* circbuf_is_empty     : cirbuf_err_t circbuf_buffer_empty(circbuf_t *circular_buffer);
-*   returns            : EMPTY for empty, PARTIAL for not empty, or other error
+* circbuf_is_empty     : cirbuf_err_t circbuf_is_empty(circbuf_t *circular_buffer);
+*   returns            : ERR_EMPTY for empty (true), ERR_PARTIAL for not empty (false), or other error
 *   circular_buffer    : The circular buffer to be checked
 * Author               : Ben Heberlein
 * Date                 : 09/07/2017
@@ -70,7 +71,7 @@ circbuf_err_t circbuf_buffer_empty(circbuf_t *circular_buffer);
 
 /***********************************************************
 * circbuf_add       : circbuf_err_t circbuf_add(uint32_t data, circbuf_t *circular_buffer);
-*   returns         : SUCESS for success, or other error if failure
+*   returns         : ERR_SUCESS for success, or other error if failure
 *   data            : The data to be added
 *   circular_buffer : The circular buffer to be added to
 * Author            : Ben Heberlein
@@ -81,7 +82,7 @@ circbuf_err_t circbuf_add(uint32_t data, circbuf_t *circular_buffer);
 
 /***********************************************************
 * circbuf_remove      : circbuf_err_t circbuf_remove(uint32_t *data, circbuf_t *circular_buffer);
-*   returns           : SUCCESS for sucess, or other error
+*   returns           : ERR_SUCCESS for sucess, or other error
 *   data              : Pointer to where to put data
 *   circular_buffer   : The circular buffer to get data from
 * Author              : Ben Heberlein
@@ -91,8 +92,8 @@ circbuf_err_t circbuf_add(uint32_t data, circbuf_t *circular_buffer);
 circbuf_err_t circbuf_remove(uint32_t *data, circbuf_t *circular_buffer);
 
 /***********************************************************
-* circbuf_allocate   : circbuf_err_t circbuf_initialize(uint16_t capacity, circbuf_t **circular_buffer);
-*   returns          : SUCCESS if successful, or another error if failed with *circular_buffer set to NULL
+* circbuf_allocate   : circbuf_err_t circbuf_allocate(uint16_t capacity, circbuf_t **circular_buffer);
+*   returns          : ERR_SUCCESS if successful, or another error if failed with *circular_buffer set to NULL
 *   capacity		 : Capacity of the buffer
 * Author             : Ben Heberlein
 * Date               : 9/7/2017
@@ -102,7 +103,7 @@ circbuf_err_t circbuf_allocate(uint16_t capacity, circbuf_t **circular_buffer);
 
 /***********************************************************
 * circbuf_destroy    : circbuf_err_t circbuf_destroy(circbuf_t *circular_buf);
-*   returns          : SUCCESS for successful destroy or other error
+*   returns          : ERR_SUCCESS for successful destroy or other error
 *   circular_buf     : Circular buffer to destroy
 * Author             : Ben Heberlein
 * Date               : 9/7/2017
@@ -112,12 +113,22 @@ circbuf_err_t circbuf_destroy(circbuf_t *circular_buf);
 
 /***********************************************************
 * circbuf_dump       : circbuf_err_t circbuf_dump(circbuf_t *circular_buf);
-*   returns          : ERR_SUCCES for sueccess or other error code
+*   returns          : ERR_SUCCESS for success or other error code
 *   circular_buf     : Circular buffer to dump
 * Author             : Ben Heberlein
 * Date               : 09/07/2017
 * Description        : Prints the contents of the circular buffer
 ***********************************************************/
-circbuf_err_t circbuf_dump(circbuf_t *cb);
+circbuf_err_t circbuf_dump(circbuf_t *circular_buf);
+
+/***********************************************************
+* circbuf_size       : uint16_t circbuf_size(circbuf_t *circular_buf);
+*   return           : current_number of items stored
+*   circular)buf     : Circular buffer to get size of
+* Author             : Ben Heberlein
+* Date               : 09/07/2017
+* Description        : Returns the size of the given circular buffer
+***********************************************************/
+uint16_t circbuf_size(circbuf_t *circular_buf);
 
 #endif
