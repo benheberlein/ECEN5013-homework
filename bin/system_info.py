@@ -1,4 +1,6 @@
+#! /usr/bin/python
 # Logs system information to a file
+
 import platform
 import os
 import subprocess
