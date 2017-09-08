@@ -91,6 +91,53 @@ ll2_err_t ll2_add_node(ll2_node_t **head, uint32_t data, uint16_t index) {
 }
 
 ll2_err_t ll2_remove_node(ll2_node_t **head, uint16_t index) {
+    if (head == NULL) {
+        return LL2_NULLPTR;
+    }
+
+    /* Must have some data */
+    if (*head == NULL) {
+        return LL2_INDEX;
+    }
+
+    uint16_t temp = 0;
+    ll2_node_t *temp_node = *head;
+
+    /* Special case for index = 0 */
+    if (index == 0) {
+        if (temp_node->next == NULL) {
+            free(temp_node);
+            *head = NULL;
+        } else {
+            ll2_node_t *t = temp_node->next;
+            t->prev = NULL;
+            free(temp_node);
+            *head = t;            
+        }
+
+        return LL2_SUCCESS;
+    }
+
+    /* Iterate through list */
+    while(temp < index) {
+        /* Jump nodes */
+        temp_node = temp_node->next;
+        temp++;
+ 
+        /* Make sure it is a valid index */
+        if (temp_node == NULL) {
+            return LL2_INDEX;
+        }
+   }
+
+    /* Remove node */
+    ll2_node_t *t = temp_node->prev;
+    t->next = temp_node->next;
+    if (temp_node->next != NULL) {
+        temp_node->next->prev = t;
+    }
+    free(temp_node);
+
     return LL2_SUCCESS;
 }
 

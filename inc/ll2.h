@@ -45,7 +45,8 @@ typedef enum ll2_err_e {
     LL2_INDEX=-1,
     LL2_MEM=-2,
     LL2_NULLPTR=-3,
-    LL2_OTHER=-4,
+    LL2_DATA=-4,
+    LL2_OTHER=-5,
 } ll2_err_t;
 
 /**
