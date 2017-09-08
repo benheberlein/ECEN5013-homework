@@ -61,6 +61,20 @@ int main() {
     e = ll2_add_node(&head, 1, 3);    
     printf("Size of list is: %d\n", ll2_size(&head));
     
+    uint16_t i = 0;
+    e = ll2_search(&head, 100, &i);
+    printf("100 found at index %d\n", i);
+    e = ll2_search(&head, 1, &i);
+    printf("1 found at index %d\n", i);
+    
+    /* Should not work, return index 0 */
+    e = ll2_search(&head, 52, &i);
+    if (e == LL2_DATA) {
+        printf("52 not found\n");
+    } else {
+        printf("Somehow found 52 at index %d\n", i);
+    }
+
     /* List should be 17, 1, verify with GDB*/
     e = ll2_remove_node(&head, 0);
     e = ll2_remove_node(&head, 1);

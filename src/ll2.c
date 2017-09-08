@@ -142,7 +142,30 @@ ll2_err_t ll2_remove_node(ll2_node_t **head, uint16_t index) {
 }
 
 ll2_err_t ll2_search(ll2_node_t **head, uint32_t data, uint16_t *index) {
-    return LL2_SUCCESS;
+    if (head == NULL) {
+        *index = -1;
+        return LL2_NULLPTR;
+    } 
+    
+    if (*head == NULL) {
+        *index = -1;
+        return LL2_DATA;
+    }
+
+    uint16_t temp = 0;
+    ll2_node_t *temp_node = *head;
+    
+    while(temp_node != NULL) {
+        if (temp_node->data == data) {
+            *index = temp;
+            return LL2_SUCCESS;
+        }
+        temp_node = temp_node->next;
+        temp++;
+    }
+
+    *index = -1;
+    return LL2_DATA;
 }
 
 uint16_t ll2_size(ll2_node_t **head) {
