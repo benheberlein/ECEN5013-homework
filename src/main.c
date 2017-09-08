@@ -52,15 +52,19 @@ int main() {
     ll2_node_t *head = NULL;
     ll2_err_t e;
 
-    /* List should be 117, 17, 100, 1 */
+    printf("Size of list is: %d\n", ll2_size(&head));
+    
+    /* List should be 117, 17, 100, 1, verify with GDB*/
     e = ll2_add_node(&head, 17, 0);
     e = ll2_add_node(&head, 100, 1);
     e = ll2_add_node(&head, 117, 0);
-    e = ll2_add_node(&head, 1, 3);
+    e = ll2_add_node(&head, 1, 3);    
+    printf("Size of list is: %d\n", ll2_size(&head));
     
-    /* List should be 17, 1 */
+    /* List should be 17, 1, verify with GDB*/
     e = ll2_remove_node(&head, 0);
     e = ll2_remove_node(&head, 1);
+    printf("Size of list is: %d\n", ll2_size(&head));
 
     return 0;
 }

@@ -146,7 +146,23 @@ ll2_err_t ll2_search(ll2_node_t **head, uint32_t data, uint16_t *index) {
 }
 
 uint16_t ll2_size(ll2_node_t **head) {
-    return 0;
+    if (head == NULL) {
+        return 0;
+    }
+
+    if (*head == 0) {
+        return 0;
+    }
+
+    uint16_t ctr = 0;
+    ll2_node_t *temp_node = *head;
+    
+    while(temp_node != NULL) {
+        temp_node = temp_node->next;
+        ctr++;
+    }
+
+    return ctr;
 }
 
 
