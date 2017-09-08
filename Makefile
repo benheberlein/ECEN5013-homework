@@ -1,14 +1,26 @@
-###########################################################
-# Makefile
+################################################################################
+# Copyright (C) 2017 by Ben Heberlein
 #
-# Date: 09/07/2017
-# Author: Ben Hebrlein
+# Redistribution, modification or use of this software in source or binary
+# forms is permitted as long as the files maintain this copyright. This file
+# was created for the University of Colorado Boulder course Advanced Practical
+# Embedded Software Development. Ben Heberlein and the University of Colorado 
+# are not liable for any misuse of this material.
 #
-# Description:
-# This is the Makefile for data structures implementations
-# for homework 1.
-#
-###########################################################
+###############################################################################
+##
+## @file Makefile
+## @brief Builds the project 
+## 
+## This  file provides the build configuration for the project. Valid targets 
+## are 'build' (default) and 'clean' to clean the /build folder. The build 
+## uses GCC as the compiler. 
+##
+## @author Ben Heberlein
+## @date September 7 2017
+## @version 1.0
+##
+###############################################################################
 
 VPATH		= src
 INC_DIR		= inc
@@ -33,7 +45,7 @@ LDFLAGS =
 CC = gcc
 
 # Targets
-###########################################################
+##############################################################################
 
 all: build
 
