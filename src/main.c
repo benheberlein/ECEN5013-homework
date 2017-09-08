@@ -1,9 +1,10 @@
 #include <stdint.h>
 #include <stdio.h>
 #include "circbuf.h"
-
+#include "ll2.h"
 
 int main() {
+    /* Test circular buffer */
 
     circbuf_t *cb = NULL;
     circbuf_err_t err;
@@ -46,6 +47,15 @@ int main() {
     } else {
         printf("Could not destroy circular buffer.\n");
     }
+
+    /* Test doubly linked list */
+    ll2_node_t *head = NULL;
+    ll2_err_t e;
+
+    /* List should be 117, 17, 100 */
+    e = ll2_add_node(&head, 17, 0);
+    e = ll2_add_node(&head, 100, 1);
+    e = ll2_add_node(&head, 117, 0);
 
     return 0;
 }

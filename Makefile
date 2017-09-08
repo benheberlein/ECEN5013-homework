@@ -22,7 +22,8 @@ MV_F    = mv -f
 OUTPUT_NAME = homework1
 
 SRCS  = main.c \
-		circbuf.c
+		circbuf.c \
+        ll2.c
 
 OBJS := $(SRCS:.c=.o)
 
