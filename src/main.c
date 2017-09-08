@@ -1,3 +1,30 @@
+/******************************************************************************
+* Copyright (C) 2017 by Ben Heberlein
+*
+* Redistribution, modification or use of this software in source or binary
+* forms is permitted as long as the files maintain this copyright. This file
+* was created for the University of Colorado Boulder course Advanced Practical
+* Embedded Software Development. Ben Heberlein and the University of Colorado 
+* are not liable for any misuse of this material.
+*
+*******************************************************************************/
+/**
+ * @file main.c
+ * @brief The main function that demonstrates ll2 and circbuf
+ * 
+ * This  file provides a demonstration/test of the circbuf implementation and 
+ * ll2 implementation for Advanced Practical Embedded Software Development 
+ * homework 1. This file is by no means supposed to be an exhaustive test
+ * suite, but should be enough to demonstrate basic functionality. A proper 
+ * set of unit tests should be implemented to show that the two libraries work
+ * as intended.
+ *
+ * @author Ben Heberlein
+ * @date September 7 2017
+ * @version 1.0
+ *
+ */
+
 #include <stdint.h>
 #include <stdio.h>
 #include "circbuf.h"
@@ -9,6 +36,7 @@ int main() {
     circbuf_t *cb = NULL;
     circbuf_err_t err;
 
+    /* Allocate circbuf */
     err = circbuf_allocate(100, &cb);
 
     if (err == ERR_SUCCESS) {    
@@ -17,6 +45,7 @@ int main() {
         printf("Could not allocate circbuf. Error code %d\n", err);
     }
 
+    /* Add data */
     for (int i = 0; i < 100; i++) {
         err = circbuf_add(i, cb);
     }
@@ -24,6 +53,7 @@ int main() {
     err = circbuf_dump(cb);    
     printf("Size of circular buffer is %d\n", circbuf_size(cb));
 
+    /* Remove data */
     uint32_t temp = 0;
     for (int i = 0; i < 10; i++) {
         err = circbuf_remove(&temp, cb);
@@ -33,6 +63,7 @@ int main() {
     err = circbuf_dump(cb);
     printf("Size of circular buffer is %d\n", circbuf_size(cb));
 
+    /* Add more data to show loop around */
     for (int i = 0; i < 5; i++) {
         err = circbuf_add(i, cb);
     }
@@ -40,6 +71,7 @@ int main() {
     err = circbuf_dump(cb);
     printf("Size of circular buffer is %d\n", circbuf_size(cb));
 
+    /* Free the buffer */
     err = circbuf_destroy(cb);
 
     if (err == ERR_SUCCESS) {
@@ -79,6 +111,14 @@ int main() {
     e = ll2_remove_node(&head, 0);
     e = ll2_remove_node(&head, 1);
     printf("Size of list is: %d\n", ll2_size(&head));
+
+    /* Should be empty */
+    e = ll2_destroy(&head);
+    if (head == NULL) {
+        printf("Destroyed list\n");
+    } else {
+        printf("Did not destroy list\n");
+    }
 
     return 0;
 }

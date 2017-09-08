@@ -29,6 +29,25 @@
 #include "ll2.h"
 
 ll2_err_t ll2_destroy(ll2_node_t **head) {
+    if (head == NULL) {
+        return LL2_NULLPTR;
+    }
+
+    if (*head == NULL) {
+        return LL2_SUCCESS;
+    }
+
+    ll2_node_t *temp_node = *head;
+    ll2_node_t *temp_node_2 = *head;
+
+    while(temp_node != NULL) {
+        temp_node_2 = temp_node->next;
+        free(temp_node);
+        temp_node = temp_node_2;
+    }
+
+    *head = NULL;
+
     return LL2_SUCCESS;
 }
 
