@@ -74,10 +74,13 @@ SYSCALL_DEFINE3(memsort, int32_t __user *, buf, int32_t, size, int32_t __user *,
         return - EFAULT;
     }
 
+    /* Print size of buffer */
+    printk(KERN_INFO, "memsort size of buffer is %d bytes.\n", size*sizeof(int32_t));
+
     /* Allocate kernel memory for sorting */
     int32_t *sort = kmalloc(size, GFP_KERNEL);
     if (sort == NULL) {
-        printk(KERN_WARNING, "memsort failed to allocate memory");
+        printk(KERN_WARNING, "memsort failed to allocate memory.\n");
     }    
 
 
@@ -116,6 +119,9 @@ SYSCALL_DEFINE3(memsort, int32_t __user *, buf, int32_t, size, int32_t __user *,
 
     /* Free memory */
     kfree(sort);
+
+    /* Goodbye */
+    printk(KERN_INFO, "memsort successfully completed.\n");
 
     return 0;
 }
