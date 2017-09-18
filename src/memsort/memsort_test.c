@@ -22,17 +22,23 @@
  */
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <sys/syscall.h>
 #include <unistd.h>
 #include <stdint.h>
 
 #define MEMSORT_NUM 500
-#define BUF_SIZE 256
+#define BUF_SIZE 128
+#define ABS_RAND 4096 
 
 int main() {
     int32_t buf[BUF_SIZE];
     int32_t sbuf[BUF_SIZE];
     int32_t size = BUF_SIZE;
+
+    for(int i = 0; i < size; i++) {
+        buf[i] = rand() % (ABS_RAND*2) - ABS_RAND;
+    }
 
     printf("About to call memsort system call...\n");
     int32_t ret = syscall(MEMSORT_NUM, buf, size, sbuf);
