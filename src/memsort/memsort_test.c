@@ -28,7 +28,7 @@
 #include <stdint.h>
 
 #define MEMSORT_NUM 500
-#define BUF_SIZE 128
+#define BUF_SIZE 512
 #define ABS_RAND 4096 
 
 int main() {
@@ -36,12 +36,25 @@ int main() {
     int32_t sbuf[BUF_SIZE];
     int32_t size = BUF_SIZE;
 
+    printf("About to call memsort system call with null source pointer...\n");
+    int32_t ret = syscall(MEMSORT_NUM, NULL, size, sbuf);
+    printf("Returned from memsort system call with error %d...\n", ret);
+    
+    printf("About to call memsort system call with null destination pointer...\n");
+    ret = syscall(MEMSORT_NUM, buf, size, NULL);
+    printf("Returned from memsort system call with error %d...\n", ret);
+ 
+    printf("About to call memsort system call with negative size...\n");
+    ret = syscall(MEMSORT_NUM, buf, -100, sbuf);
+    printf("Returned from memsort system call with error %d...\n", ret);
+ 
+    /* Populate data */
     for(int i = 0; i < size; i++) {
         buf[i] = rand() % (ABS_RAND*2) - ABS_RAND;
     }
 
     printf("About to call memsort system call...\n");
-    int32_t ret = syscall(MEMSORT_NUM, buf, size, sbuf);
+    ret = syscall(MEMSORT_NUM, buf, size, sbuf);
     printf("Returned from memsort system call with error %d...\n", ret);
     
     return 0;
