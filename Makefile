@@ -18,28 +18,41 @@
 ##
 ## @author Ben Heberlein
 ## @date September 7 2017
-## @version 1.0
+## @version 1.1
 ##
 ###############################################################################
 
-VPATH		= src
+VPATH		= src:test
 INC_DIR		= inc
 BUILD_DIR	= build
 BIN_DIR		= bin
+3P_DIR      = 3rd-party
+3P_INC_DIR  = 3rd-party/inc
+3P_SRC_DIR  = 3rd-party/src
+3P_LIB_DIR  = 3rd-party/lib
+CMOCKA      = cmocka
 
 MKDIR_P = mkdir -p
 RM_F    = rm -f
 MV_F    = mv -f
 
-OUTPUT_NAME = homework1
+OUTPUT_NAME = homework2
+
+TEST_OUTPUT_NAME = "test_homework2"
 
 SRCS  = main.c \
 		circbuf.c \
         ll2.c
 
+TEST_SRCS = circbuf.c \
+            ll2.c \
+            #test_ll2.c 
+
 OBJS := $(SRCS:.c=.o)
 
-CFLAGS = -std=c99 -g -O0 -Wall -Wextra -I$(INC_DIR)
+TEST_OBJS := $(TEST_SRCS:.c=.o)
+
+CFLAGS = -std=c99 -g -O0 -Wall -Wextra -I$(INC_DIR) -I$(3P_INC_DIR)
 LDFLAGS =
 
 CC = gcc
@@ -57,6 +70,10 @@ $(BUILD_DIR)/%.o: %.c
 	@$(MKDIR_P) $(BUILD_DIR)
 	$(CC) $(CFLAGS) -c $< -o $@
 
+$(BIN_DIR)/$(TEST_OUTPUT_NAME): $(addprefix $(BUILD_DIR)/, $(TEST_OBJS))
+	@$(MKDIR_P) $(BIN_DIR)
+	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $^
+
 # Remaps an individual object file to the correct folder
 .PHONY: %.o
 %.o: $(BUILD_DIR)/%.o
@@ -66,8 +83,21 @@ $(BUILD_DIR)/%.o: %.c
 .PHONY: build
 build: $(BIN_DIR)/$(OUTPUT_NAME)
 
-# Deletes build files and executables
+# Build cmocka testing framework and any future 3rd party libraries
+.PHONY: 3rd-party
+3rd-party:
+	$(MAKE) --no-print-directory --directory=$(3P_DIR) \
+		CC=$(CC) CFLAGS="$(CFLAGS)" $(CMOCKA);
+
+# Build test suite and execute
+.PHONY:
+test:  $(BIN_DIR)/$(TEST_OUTPUT_NAME)
+	./$(TEST_OUTPUT_NAME)
+
+# Deletes build files, leaves executables
 .PHONY: clean
 clean:
 	@$(RM_F) $(BUILD_DIR)/*
 	@echo Successfully cleaned.
+
+
