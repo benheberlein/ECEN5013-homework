@@ -26,11 +26,12 @@ VPATH		= src:test
 INC_DIR		= inc
 BUILD_DIR	= build
 BIN_DIR		= bin
-3P_DIR      = 3rd-party
+3P_DIR		= 3rd-party
 3P_INC_DIR  = 3rd-party/inc
 3P_SRC_DIR  = 3rd-party/src
 3P_LIB_DIR  = 3rd-party/lib
-CMOCKA      = cmocka
+CMOCKA		= cmocka
+CMOCKA_LIB  = libcmocka.a
 
 MKDIR_P = mkdir -p
 RM_F    = rm -f
@@ -38,7 +39,7 @@ MV_F    = mv -f
 
 OUTPUT_NAME = homework2
 
-TEST_OUTPUT_NAME = "test_homework2"
+TEST_OUTPUT_NAME = test_homework2
 
 SRCS  = main.c \
 		circbuf.c \
@@ -51,6 +52,8 @@ TEST_SRCS = circbuf.c \
 OBJS := $(SRCS:.c=.o)
 
 TEST_OBJS := $(TEST_SRCS:.c=.o)
+
+
 
 CFLAGS = -std=c99 -g -O0 -Wall -Wextra -I$(INC_DIR) -I$(3P_INC_DIR)
 LDFLAGS =
@@ -72,7 +75,7 @@ $(BUILD_DIR)/%.o: %.c
 
 $(BIN_DIR)/$(TEST_OUTPUT_NAME): $(addprefix $(BUILD_DIR)/, $(TEST_OBJS))
 	@$(MKDIR_P) $(BIN_DIR)
-	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $^
+	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $^ $(3P_LIB)/$(CMOCKA_LIB)
 
 # Remaps an individual object file to the correct folder
 .PHONY: %.o
@@ -86,8 +89,7 @@ build: $(BIN_DIR)/$(OUTPUT_NAME)
 # Build cmocka testing framework and any future 3rd party libraries
 .PHONY: 3rd-party
 3rd-party:
-	$(MAKE) --no-print-directory --directory=$(3P_DIR) \
-		CC=$(CC) CFLAGS="$(CFLAGS)" $(CMOCKA);
+	$(MAKE) --no-print-directory --directory=$(3P_DIR) CC=$(CC) CFLAGS="$(CFLAGS)" $(CMOCKA);
 
 # Build test suite and execute
 .PHONY:

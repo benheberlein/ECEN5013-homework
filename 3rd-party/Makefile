@@ -30,27 +30,25 @@ LIB_DIR=lib
 MKDIR_P = mkdir -p
 RM_RF = rm -rf
 
-.PHONY : 3rd-party
+.PHONY: 3rd-party
 3rd-party : cmocka
 
-.PHONY : cmocka
-cmocka : FORCE
-    @$(MKDIR_P) $(BUILD_DIR)/$@;
-    cd $(BUILD_DIR)/$@; cmake \
+.PHONY: cmocka
+cmocka:
+	@$(MKDIR_P) $(BUILD_DIR)/$@;
+	cd $(BUILD_DIR)/$@; cmake \
         -DMAKE_INSTALL_PREFIX=.. \
         -DMAKE_BUILD_TYPE=$(BUILD) \
         -DCC=$(CC) \
         -DWITH_STATIC_LIB=ON \
         ../../cmocka; make install
-    @$(MKDIR_P) $(SRC_DIR)
-    @$(MKDIR_P) $(INC_DIR)
-    @$(MKDIR_P) $(LIB_DIR)
-    cp $(BUILD_DIR)/include/* $(INC)
-    cp $(BUILD_DIR)/lib/libmocka.a $(LIB)
+	@$(MKDIR_P) $(SRC_DIR)
+	@$(MKDIR_P) $(INC_DIR)
+	@$(MKDIR_P) $(LIB_DIR)
+	cp $(BUILD_DIR)/include/* $(INC)
+	cp $(BUILD_DIR)/lib/libmocka.a $(LIB)
 
-.PHONY : clean
-clean: FORCE
-    RM_RF $(BUILD_DIR)
-    RM_RF *~
-
-FORCE :
+.PHONY: clean
+clean:
+	$(RM_RF) $(BUILD_DIR)
+	$(RM_RF) *~
