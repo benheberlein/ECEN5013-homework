@@ -27,9 +27,9 @@ INC_DIR		= inc
 BUILD_DIR	= build
 BIN_DIR		= bin
 3P_DIR		= 3rd-party
-3P_INC_DIR  = 3rd-party/inc
-3P_SRC_DIR  = 3rd-party/src
-3P_LIB_DIR  = 3rd-party/lib
+3P_INC_DIR  = 3rd-party/build/cmocka/include
+3P_SRC_DIR  = 3rd-party/build/cmocka/src
+3P_LIB_DIR  = 3rd-party/build/cmocka/lib
 CMOCKA		= cmocka
 CMOCKA_LIB  = libcmocka.a
 
@@ -53,8 +53,6 @@ OBJS := $(SRCS:.c=.o)
 
 TEST_OBJS := $(TEST_SRCS:.c=.o)
 
-
-
 CFLAGS = -std=c99 -g -O0 -Wall -Wextra -I$(INC_DIR) -I$(3P_INC_DIR)
 LDFLAGS =
 
@@ -75,7 +73,7 @@ $(BUILD_DIR)/%.o: %.c
 
 $(BIN_DIR)/$(TEST_OUTPUT_NAME): $(addprefix $(BUILD_DIR)/, $(TEST_OBJS))
 	@$(MKDIR_P) $(BIN_DIR)
-	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $^ $(3P_LIB)/$(CMOCKA_LIB)
+	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $^ -l$(CMOCKA)
 
 # Remaps an individual object file to the correct folder
 .PHONY: %.o

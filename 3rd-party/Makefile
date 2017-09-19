@@ -26,6 +26,7 @@ BUILD_DIR=build
 INC_DIR=inc
 SRC_DIR=src
 LIB_DIR=lib
+INSTALL_DIR=$(BUILD_DIR)
 
 MKDIR_P = mkdir -p
 RM_RF = rm -rf
@@ -37,16 +38,11 @@ RM_RF = rm -rf
 cmocka:
 	@$(MKDIR_P) $(BUILD_DIR)/$@;
 	cd $(BUILD_DIR)/$@; cmake \
-        -DMAKE_INSTALL_PREFIX=.. \
-        -DMAKE_BUILD_TYPE=$(BUILD) \
+        -DCMAKE_INSTALL_PREFIX=.. \
+        -DCMAKE_BUILD_TYPE=Debug \
         -DCC=$(CC) \
         -DWITH_STATIC_LIB=ON \
         ../../cmocka; make install
-	@$(MKDIR_P) $(SRC_DIR)
-	@$(MKDIR_P) $(INC_DIR)
-	@$(MKDIR_P) $(LIB_DIR)
-	cp $(BUILD_DIR)/include/* $(INC)
-	cp $(BUILD_DIR)/lib/libmocka.a $(LIB)
 
 .PHONY: clean
 clean:
