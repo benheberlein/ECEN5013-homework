@@ -47,7 +47,7 @@ SRCS  = main.c \
 
 TEST_SRCS = circbuf.c \
             ll2.c \
-            #test_ll2.c 
+            test_ll2.c 
 
 OBJS := $(SRCS:.c=.o)
 
@@ -92,12 +92,13 @@ build: $(BIN_DIR)/$(OUTPUT_NAME)
 # Build test suite and execute
 .PHONY:
 test:  $(BIN_DIR)/$(TEST_OUTPUT_NAME)
-	./$(TEST_OUTPUT_NAME)
+	$(BIN_DIR)/$(TEST_OUTPUT_NAME)
 
 # Deletes build files, leaves executables
 .PHONY: clean
 clean:
 	@$(RM_F) $(BUILD_DIR)/*
+	@$(RM_F) $(BIN_DIR)/*
 	@echo Successfully cleaned.
 
 

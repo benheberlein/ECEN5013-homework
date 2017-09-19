@@ -16,6 +16,10 @@
 ## This is based on the example given by Alex Fosdick at
 ## https://github.com/afosdick/ecen5013/blob/develop/tutorials/unit_tests/
 ##
+## This file will install cmocka to /usr/local/lib. You will probably need to
+## run 'ldconfig' before testing so that the system can find the shared 
+## library file.
+##
 ## @author Ben Heberlein
 ## @date September 18 2017
 ## @version 1.0
