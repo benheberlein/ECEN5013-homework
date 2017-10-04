@@ -12,15 +12,17 @@
 ## @file Makefile
 ## @brief Builds the timermod module
 ##
-## This file builds the associated timermod kernel module. 
+## This file builds the associated timermod and procmod kernel modules.
 ##
 ## @author Ben Heberlein
-## @date September 7 2017
-## @version 1.0
+## @date October 3 2017
+## @version 3.0
 ##
 ###############################################################################
 
-obj-m += timermod.o
+obj-m += timermod.o 
+obj-m += kthread_mod2.o
+obj-m += procmod.o
 
 all:
 	make -C /lib/modules/$(shell uname -r)/build M=$(shell pwd) modules
