@@ -54,15 +54,17 @@ static int __dummy(void *data) {
  */ 
 static void __recursive_search(struct task_struct *t) {
     if (&t->children == NULL) {
-        printk(KERN_INFO "procmod: %s\t[%d]\n", t->comm, t->pid);
+        printk(KERN_INFO "procmod: %s\t[%d]\t%ld\t%d\n", t->comm, t->pid, t->state, 0);
     } else {
         struct list_head *list;
         struct task_struct *task;
+        int numch = 0;
         list_for_each(list, &t->children) {
             task = list_entry(list, struct task_struct, sibling);
             __recursive_search(task);
+            numch++;
         } 
-        printk(KERN_INFO "procmod: %s\t[%d]\n", t->comm, t->pid);     
+        printk(KERN_INFO "procmod: %s\t[%d]\t%ld\t%d\n", t->comm, t->pid, t->state, numch);     
     }
 }
 
@@ -81,16 +83,7 @@ static int __init procmod_init(void) {
     thread = kthread_run(__dummy, NULL, "kthread_dummy");
     task = thread;
 
-    printk(KERN_INFO "procmod: name\t[PID]\n");
-
-#if 0
-    for_each_process(task) {
-        /* Check if this is a kernel task */
-        if (task->mm == NULL) {
-            printk(KERN_INFO "procmod: %s\t[%d]\n", task->comm, task->pid);
-        }
-    }
-#endif
+    printk(KERN_INFO "procmod: name\t[PID]\tSTATUS\tCHILDREN\n");
 
     /* move to kthreadd */
     while(task->parent->pid != 0) {
@@ -100,16 +93,6 @@ static int __init procmod_init(void) {
     __recursive_search(task);
 
     kthread_stop(thread);
-
-#if 0
-    do {
-        if (task->mm == NULL) {
-            printk(KERN_INFO "procmod: %s\t[%d]\n", task->comm, task->pid);
-        }
-        task = next_task(task);
-    } while(task != current);
-
-#endif
 
     printk(KERN_INFO "procmod: module successfully loaded and initialized.\n");
     return 0;

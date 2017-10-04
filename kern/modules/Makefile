@@ -21,7 +21,7 @@
 ###############################################################################
 
 obj-m += timermod.o 
-obj-m += kthread_mod2.o
+obj-m += kthread_mod.o
 obj-m += procmod.o
 
 all:

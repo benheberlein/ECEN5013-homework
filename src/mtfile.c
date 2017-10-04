@@ -45,7 +45,6 @@ pthread_t print_thread;
 pthread_mutex_t stat_lock;
 pthread_mutex_t print_lock;
 pthread_mutex_t data_lock;
-pthread_mutex_t input_lock;
 
 char buf[MAX_LINES][MAX_LINESIZE];
 
